@@ -1,15 +1,15 @@
 import type { Metadata } from "next";
-import { Montserrat } from 'next/font/google'
+import { Roboto } from 'next/font/google'
 import "./globals.css";
 import TanStackProvider from "@/components/TanStackProvider/TanStackProvider";
 import Header from "@/components/Header/Header";
 import Footer from "@/components/Footer/Footer";
 
 
-const montserrat = Montserrat({
+const roboto = Roboto({
    subsets: [ 'latin' ], 
    weight: [ '400' , '700' ],
-   variable: '--font-montserrat' , 
+   variable: '--font-roboto' , 
    display: 'swap' ,
 })
 
@@ -42,7 +42,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={montserrat.variable}>
+      <body className={roboto.variable}>
         <TanStackProvider>
         <Header/>
           {children}

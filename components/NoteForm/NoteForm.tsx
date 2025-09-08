@@ -13,12 +13,7 @@ const NoteForm = () => {
   const router = useRouter();
   const handleSubmit = (formData: FormData) => {
     const values = Object.fromEntries(formData) as unknown as NewNote;
-    mutation.mutate(values, {
-      onSuccess: () => {
-        router.push("/notes/filter/All");
-        clearDraft();
-      },
-    });
+    mutation.mutate(values);
   };
 
   const { draft, setDraft, clearDraft } = useNoteStore();
@@ -29,6 +24,8 @@ const NoteForm = () => {
     mutationFn: createNote,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["notes"] });
+      clearDraft();
+        router.push("/notes/filter/All");
     },
   });
 
@@ -36,7 +33,7 @@ const NoteForm = () => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     setDraft({
       ...draft,
-      [e.target.name]: e.currentTarget.value,
+      [e.currentTarget.name]: e.currentTarget.value,
     });
   }
 
@@ -44,14 +41,14 @@ const NoteForm = () => {
         <form className={css.form} action={handleSubmit}>
           <div className={css.formGroup}>
             <label htmlFor="title">Title</label>
-            <input id="title" name="title" className={css.input} defaultValue={draft.title} onChange={handleChange}/>
+            <input id="title" name="title" className={css.input} value={draft.title} onChange={handleChange}/>
           </div>
 
           <div className={css.formGroup}>
             <label htmlFor="content">Content</label>
         <textarea 
           onChange={handleChange}
-          defaultValue={draft.content}
+          value={draft.content}
               id="content"
               name="content"
               rows={8}
@@ -62,7 +59,7 @@ const NoteForm = () => {
 
           <div className={css.formGroup}>
             <label htmlFor="tag">Tag</label>
-            <select id="tag" name="tag" className={css.select} defaultValue={draft.tag} onChange={handleChange}>
+            <select id="tag" name="tag" className={css.select} value={draft.tag} onChange={handleChange}>
               <option value="Todo">Todo</option>
               <option value="Work">Work</option>
               <option value="Personal">Personal</option>
