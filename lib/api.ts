@@ -12,6 +12,11 @@ interface FetchNotesParams {
   search?: string
   tag?: string
 }
+export interface NewNote {
+  title: string
+  content: string
+  tag: string
+}
 
 const api = axios.create({
   baseURL: 'https://notehub-public.goit.study/api',

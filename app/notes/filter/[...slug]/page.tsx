@@ -6,11 +6,38 @@ import {
 } from "@tanstack/react-query";
 import NotesClientPage from "./Notes.client";
 import fetchNotes from "@/lib/api";
+import { Metadata } from "next";
 
 
 interface NotesProps {
   params: Promise<{ slug: string[] }>;
 }
+
+export const generateMetadata = async ({
+  params,
+}: NotesProps): Promise<Metadata> => {
+  const { slug } = await params;
+  
+  return {
+    title: `${slug[0]} notes`,
+    description: `notes list of tag ${slug[0]}`,
+    openGraph: {
+      title: `${slug[0]} notes`,
+      description: `notes list of tag ${slug[0]}`,
+      url: `https://08-zustand-three-nu.vercel.app/notes/`,
+      siteName: "NoteHub",
+      images: [
+        {
+          url: "https://ac.goit.global/fullstack/react/notehub-og-meta.jpg",
+          width: 1200,
+          height: 630,
+          alt: "og notehub",
+        },
+      ],
+      type: "article",
+    },
+  };
+};
 
 const Notes = async ({ params }: NotesProps) => {
   const { slug } = await params;

@@ -9,8 +9,7 @@ import SearchBox from '@/components/SearchBox/SearchBox';
 import Pagination from '@/components/Pagination/Pagination';
 import ErrorMessage from '@/components/ErrorMessage/ErrorMessage';
 import NoteList from '@/components/NoteList/NoteList';
-import Modal from '@/components/Modal/Modal';
-import NoteForm from '@/components/NoteForm/NoteForm';
+import Link from 'next/link';
 
 
 interface NotesClientPageProps {
@@ -20,7 +19,7 @@ interface NotesClientPageProps {
 export default function NotesClientPage({tag}: NotesClientPageProps) {
   const [page, setPage] = useState(1);
   const [query, setQuery] = useState("");
-  const [isOpen, setIsOpen] = useState(false);
+  
 
   const { data, isSuccess, isLoading, isError } = useQuery({
     queryKey: ["notes", page, query, tag],
@@ -45,9 +44,11 @@ export default function NotesClientPage({tag}: NotesClientPageProps) {
                       onPageChange={setPage}
           />
         )}
-        <button onClick={() => setIsOpen(true)} className={css.button}>
+        <Link
+          href={`/notes/action/create`}
+          className={css.button}>
           Create note +
-        </button>
+        </Link>
       </header>
       {isLoading && <Loader />}
       {isError && <ErrorMessage />}
@@ -55,11 +56,6 @@ export default function NotesClientPage({tag}: NotesClientPageProps) {
         <NoteList notes={data.notes} />
       ) : (
         !isLoading && <p>Tasks not found</p>
-      )}
-      {isOpen && (
-        <Modal onClose={() => setIsOpen(false)}>
-          <NoteForm onCancel={() => setIsOpen(false)} />
-        </Modal>
       )}
     </div>
   )

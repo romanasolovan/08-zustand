@@ -1,98 +1,97 @@
+'use client'
+
 import css from "./NoteForm.module.css";
-import { ErrorMessage, Formik, Form, Field } from "formik";
-import * as Yup from 'yup';
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import type { Note } from "../../types/note";
-import { createNote } from '../../lib/api';
 
-interface NoteFormProps {
-  onCancel: () => void;
-}
+import { createNote, NewNote } from '../../lib/api';
+import { useRouter } from "next/navigation";
+import { useNoteStore } from "@/lib/store/noteStore";
 
-interface NoteValues {
-  title: string;
-  content: string;
-  tag: Note["tag"];
-}
 
-const validationSchema = Yup.object({
-  title: Yup.string().required("Title is required").min(3).max(50),
-  content: Yup.string().max(500),
-  tag: Yup.string()
-    .required("Tag is required")
-    .oneOf(["Todo", "Work", "Personal", "Meeting", "Shopping"], "Invalid tag"),
-});
+// as as gpt
+const NoteForm = () => {
+  const router = useRouter();
+  const handleSubmit = (formData: FormData) => {
+    const values = Object.fromEntries(formData) as unknown as NewNote;
+    mutation.mutate(values, {
+      onSuccess: () => {
+        router.push("/notes/filter/All");
+        clearDraft();
+      },
+    });
+  };
 
-const NoteForm = ({ onCancel }: NoteFormProps) => {
+  const { draft, setDraft, clearDraft } = useNoteStore();
+
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
     mutationFn: createNote,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["notes"] });
-      onCancel();
     },
   });
 
+  
+  // event.target more explaining - what is done here -- [e.target.name]: e.currentTarget.value
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+    setDraft({
+      ...draft,
+      [e.target.name]: e.currentTarget.value,
+    });
+  }
+
   return (
-    <Formik
-      initialValues={{ title: "", content: "", tag: "Todo" as Note["tag"] }}
-      validationSchema={validationSchema}
-      onSubmit={(values: NoteValues) => {
-        mutation.mutate(values);
-      }}
-    >
-      {({ isValid }) => (
-        <Form className={css.form}>
+  // action - chatgpt
+        <form className={css.form} action={handleSubmit}>
           <div className={css.formGroup}>
             <label htmlFor="title">Title</label>
-            <Field id="title" name="title" className={css.input} />
-            <ErrorMessage name="title" component="div" className={css.error} />
+            <input id="title" name="title" className={css.input} defaultValue={draft.title} onChange={handleChange}/>
           </div>
 
           <div className={css.formGroup}>
             <label htmlFor="content">Content</label>
-            <Field
-              as="textarea"
+        <textarea 
+          onChange={handleChange}
+          defaultValue={draft.content}
               id="content"
               name="content"
               rows={8}
               className={css.textarea}
             />
-            <ErrorMessage name="content" component="div" className={css.error} />
+            
           </div>
 
           <div className={css.formGroup}>
             <label htmlFor="tag">Tag</label>
-            <Field as="select" id="tag" name="tag" className={css.select}>
+            <select id="tag" name="tag" className={css.select} defaultValue={draft.tag} onChange={handleChange}>
               <option value="Todo">Todo</option>
               <option value="Work">Work</option>
               <option value="Personal">Personal</option>
               <option value="Meeting">Meeting</option>
               <option value="Shopping">Shopping</option>
-            </Field>
-            <ErrorMessage name="tag" component="div" className={css.error} />
+            </select>
+            
           </div>
 
           <div className={css.actions}>
-            <button
+        <button
+          onClick={router.back}
               type="button"
               className={css.cancelButton}
-              onClick={onCancel}
             >
               Cancel
             </button>
             <button
-              type="submit"
-              className={css.submitButton}
-              disabled={!isValid || mutation.isPending}
+          type="submit"
+          className={css.submitButton}
             >
               Create note
             </button>
           </div>
-        </Form>
-      )}
-    </Formik>
+        </form>
+      
   );
 };
 
