@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 import { useNoteStore } from "@/lib/store/noteStore";
 
 
-// as as gpt
+
 const NoteForm = () => {
   const router = useRouter();
   const handleSubmit = (formData: FormData) => {
@@ -32,8 +32,6 @@ const NoteForm = () => {
     },
   });
 
-  
-  // event.target more explaining - what is done here -- [e.target.name]: e.currentTarget.value
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     setDraft({
@@ -43,7 +41,6 @@ const NoteForm = () => {
   }
 
   return (
-  // action - chatgpt
         <form className={css.form} action={handleSubmit}>
           <div className={css.formGroup}>
             <label htmlFor="title">Title</label>

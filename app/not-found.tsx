@@ -14,11 +14,11 @@ const PageNotFound = () => {
 
 export const metadata: Metadata = {
   title: "Page Not Found",
-  description: "Page Not Found",
+  description: "Page does not exist",
   openGraph: {
     title: `Page Not Found`,
-    description: "Page Not Found",
-    url: ``,
+    description: "Page does not exist",
+    url: `https://08-zustand-kappa-cyan.vercel.app/`,
     siteName: "NoteHub",
     images: [
       {

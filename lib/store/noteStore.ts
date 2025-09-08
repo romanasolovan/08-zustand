@@ -14,8 +14,6 @@ const initialDraft: NewNote = {
   content: '',
 }
 
-//set zustand gpt - explain below in detail, explain more about state
-
 export const useNoteStore = create<noteStore>()(
   persist(
     (set) => ({

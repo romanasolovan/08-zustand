@@ -15,11 +15,11 @@ const montserrat = Montserrat({
 
 export const metadata: Metadata = {
   title: "Notehub App",
-  description: "Small app with notes",
+  description: "Small note app",
   openGraph: {
     title: `Notehub App`,
-    description: "Smaii app with notes",
-    url: ``,
+    description: "Small app with notes",
+    url: `https://08-zustand-kappa-cyan.vercel.app/`,
     siteName: "NoteHub",
     images: [
       {

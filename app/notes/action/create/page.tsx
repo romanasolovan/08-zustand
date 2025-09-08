@@ -4,12 +4,11 @@ import { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: "Notehub Create Page",
-  description: "Page that allows you to create new note",
+  description: "Page that allows you to create a new note",
   openGraph: {
     title: `Notehub Create Page`,
-      description: "Page that allows you to create new note",
-    //add my own link
-    url: `https://08-zustand-three-nu.vercel.app/notes/action/create`,
+      description: "Page that allows you to create a new note",
+    url: `https://08-zustand-kappa-cyan.vercel.app/notes/action/create`,
     siteName: "NoteHub",
     images: [
       {
